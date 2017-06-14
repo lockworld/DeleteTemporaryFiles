@@ -16,7 +16,7 @@ namespace DeleteTemporaryFiles.Services
 
         public Logging(string temporaryFilePath, int keepForDays)
         {
-            TemporaryFilePath = temporaryFilePath;
+            TemporaryFilePath = temporaryFilePath.TrimEnd('\\') + @"\";
             KeepForDays = keepForDays;
             LogFilePath = TemporaryFilePath + @"Logs\";
             LogFile = LogFilePath + LogFileName;
