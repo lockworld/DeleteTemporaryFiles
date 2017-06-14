@@ -3,7 +3,7 @@ This Windows application can be run as a scheduled task to purge files from a de
 
 
 ## To Use:
-Download and build the application to generate the executable file. Once this is done, run the executable from the command line with two parameters:
+Download the application (or download and build the source code to generate the executable file). Once this is done, run the executable from the command line with two parameters:
 1. The full path to the Temporary Folder you wish to scan and clean
 2. The number of days you'd like to keep files in this folder (The application will delete ANYTHING more than this number of days old)
 
