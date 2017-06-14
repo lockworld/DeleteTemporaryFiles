@@ -9,7 +9,7 @@ Download and build the application to generate the executable file. Once this is
 
 
 ### Example:
-C:\> "Delete Temporary Files.exe" "C:\Users\Lockworld\Documents\Temporary Files\" 14
+C:\> "DeleteTemporaryFiles.exe" "C:\Users\Lockworld\Documents\Temporary Files\" 14
 > This will delete everything in the folder "C:\Users\Lockworld\Documents\Temporary Files\" that has not been modified in more than 14 days.
 
 
