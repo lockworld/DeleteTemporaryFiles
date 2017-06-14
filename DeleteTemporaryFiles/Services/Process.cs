@@ -24,6 +24,7 @@ namespace DeleteTemporaryFiles.Services
 
         public static void ProcessFolder()
         {            
+            // The first time the method is called (without any parameters), run it on the defined temporaryFolder from the command-line arguments
             ProcessFolder(temporaryFolder);            
         }
 
@@ -55,7 +56,7 @@ namespace DeleteTemporaryFiles.Services
 
             //Requires a reference to Microsoft Shell Controls and Automation COM Type Library
             Folder RecycleBin = shell.NameSpace(ShellSpecialFolderConstants.ssfBITBUCKET);            
-                                                 //ssfBITBUCKET is the user's recycle bin
+                                                 //ssfBITBUCKET refers to the user's recycle bin
                                                  //Ref: https://msdn.microsoft.com/en-us/library/windows/desktop/bb774096(v=vs.85).aspx
 
             // Process directories first (This prevents encountering a "Directory Not Found" error by scanning a directory AFTER it is deleted...
@@ -63,22 +64,12 @@ namespace DeleteTemporaryFiles.Services
             {
                 subDirs = di.GetDirectories();
             }
-            catch (UnauthorizedAccessException uae)
+            catch (Exception ex)
             {
                 LogEntry entry = new LogEntry
                 {
                     Status = LogStatus.Error,
-                    Message = "An Unauthorized Access Exception occurred while scanning the directory \"" + di.FullName + ":\"\r\n     " + uae.Message.ToString()
-                };
-                Logging.Log(entry);
-            }
-            catch (DirectoryNotFoundException dne)
-            {
-
-                LogEntry entry = new LogEntry
-                {
-                    Status = LogStatus.Error,
-                    Message = "A Directory Not Found Exception occurred while scanning the directory \"" + di.FullName + ":\"\r\n     " + dne.Message.ToString()
+                    Message = "An error occurred while scanning the directory \"" + di.FullName + ":\"\r\n     " + ex.Message.ToString()
                 };
                 Logging.Log(entry);
             }
@@ -87,6 +78,7 @@ namespace DeleteTemporaryFiles.Services
             {
                 foreach (DirectoryInfo dirInfo in subDirs)
                 {
+                    // Recursion call to run this method for every subdirectory under the user-defined starting directory
                     ProcessFolder(dirInfo);
                 }
             }
@@ -95,9 +87,9 @@ namespace DeleteTemporaryFiles.Services
             // Process files next
             if (files.Count()>0)
             {
+                // Check each file for date last modified...delete those modified before the defined referenceDate
                 foreach (FileInfo fi in files)
-                {
-                    
+                {                    
                     if (fi.LastWriteTime < referenceDate)
                     {
                         try
@@ -124,7 +116,7 @@ namespace DeleteTemporaryFiles.Services
                             LogEntry entry = new LogEntry
                             {
                                 Status = LogStatus.Error,
-                                Message = "Error moving \"" + fi.FullName + "\" to \"" + recycleBin.FullName + fi.Name + "\"5\r\n     " + ex.Message.ToString()
+                                Message = "Error moving \"" + fi.FullName + "\" to \"" + recycleBin.FullName + fi.Name + "\"\r\n     " + ex.Message.ToString()
                             };
                             Logging.Log(entry);
                         }
@@ -136,7 +128,7 @@ namespace DeleteTemporaryFiles.Services
             {
                 if (di.FullName != temporaryFolder.FullName)
                 {
-                    // Remove empty folders
+                    // Delete empty folders...If the folder was not empty when first scanned, it will be left alone until the next time the application runs.
                     try
                     {
                         RecycleBin.MoveHere(di.FullName, vOptions: 0x4);

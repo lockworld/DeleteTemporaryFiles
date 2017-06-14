@@ -66,5 +66,11 @@ namespace DeleteTemporaryFiles.Services
             }
         }
 
+        public static void CloseLog()
+        {
+            LogSpacer();
+            LogSpacer("");
+        }
+
     }
 }
