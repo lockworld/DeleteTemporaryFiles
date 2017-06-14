@@ -7,16 +7,20 @@ Download and build the application to generate the executable file. Once this is
 1. The full path to the Temporary Folder you wish to scan and clean
 2. The number of days you'd like to keep files in this folder (The application will delete ANYTHING more than this number of days old)
 
+
 ### Example:
-C:\> "Delete Temporary Files.exe" "C:\Users\Lockworld\Documents\Temporary Files\" 14
+C:\> "DeleteTemporaryFiles.exe" "C:\Users\Lockworld\Documents\Temporary Files\" 14
 > This will delete everything in the folder "C:\Users\Lockworld\Documents\Temporary Files\" that has not been modified in more than 14 days.
+
 
 ## Recommendation:
 Create a scheduled task to run this application with the appropriate parameters on a regular basis.
 > TIP: Create one scheduled task, and create multiple actions within the task to run this application against multiple folders, such as:
 > * Your Downloads folder
 > * The temporary folders you create to store downloaded files and resources
-> * Any Log folders that are not cleaned up automatically by the application that creates them.
+> * Any Log folders that are not cleaned up automatically by the application that creates them
+> * Folders you've configured to automatically save all of your screenshots
+
 
 # **_WARNINGS_**
 1. _Use at your own risk._ The application does not prevent you from deleting files needed by your operating system. Improper use of this application can render your computer inoperable.
