@@ -7,6 +7,7 @@ Download and build the application to generate the executable file. Once this is
 1. The full path to the Temporary Folder you wish to scan and clean
 2. The number of days you'd like to keep files in this folder (The application will delete ANYTHING more than this number of days old)
 
+Download link: <https://github.com/lockworld/DeleteTemporaryFiles/raw/master/DeleteTemporaryFiles.exe>
 
 ### Example:
 C:\> "DeleteTemporaryFiles.exe" "C:\Users\Lockworld\Documents\Temporary Files\" 14
