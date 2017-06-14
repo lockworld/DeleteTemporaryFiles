@@ -9,21 +9,22 @@ namespace DeleteTemporaryFiles.Services
 {
     public class Validation
     {
-        public static void ValidateArguments(string temporaryFilePath, int keepForDays)
+        public static bool ValidateArguments(string temporaryFilePath, int keepForDays)
         {
-            ValidateKeepForDays(keepForDays);            
+            return ValidateKeepForDays(keepForDays);            
         }
 
-        private static void ValidateKeepForDays(int keepForDays)
+        private static bool ValidateKeepForDays(int keepForDays)
         {
             LogEntry logEntry = new LogEntry();
             if (keepForDays < 1)
             {
                 logEntry.Success = false;
                 logEntry.Status = Entities.Enums.LogStatus.Error;
-                logEntry.Message = "The \"Keep For Days\" parameter supplied (" + keepForDays.ToString() + ") is not valid. Please enter an integer greater than 1 and re-run the application.\r\n";
+                logEntry.Message = "The \"Keep For Days\" parameter supplied (" + keepForDays.ToString() + ") is not valid. Please enter an integer greater than 1 and re-run the application.";
                 Logging.Log(logEntry);
             }
+            return logEntry.Success;
         }
         
     }

@@ -1,4 +1,5 @@
 ﻿using DeleteTemporaryFiles.Entities;
+using DeleteTemporaryFiles.Entities.Enums;
 using System;
 using System.IO;
 
@@ -28,11 +29,23 @@ namespace DeleteTemporaryFiles.Services
             {
                 Directory.CreateDirectory(LogFilePath);
             }
+
+            Logging.LogSpacer("");
+            Logging.LogSpacer();
+
+            var entry = new LogEntry
+            {
+                Timestamp = DateTime.Now,
+                Status = LogStatus.Information,
+                Success = true,
+                Message = "Delete Files and Folders process started on folder \"" + TemporaryFilePath + "\""
+            };
+            Logging.Log(entry);
+            Logging.LogSpacer("");
         }
 
-        public static Response Log(LogEntry entry)
+        public static void Log(LogEntry entry)
         {
-
             string LogEntry = string.Format("{0,-25}  {1,-15}  {2}", entry.Timestamp.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss.fff"), entry.Status.ToString().ToUpper(), entry.Message);
             var Response = new Response
             {
@@ -44,7 +57,6 @@ namespace DeleteTemporaryFiles.Services
             {
                 sw.WriteLine(LogEntry);
             }
-            return Response;
         }
         public static void LogSpacer(string spacer = "-----")
         {
