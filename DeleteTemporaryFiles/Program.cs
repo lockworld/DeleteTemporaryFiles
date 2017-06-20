@@ -17,17 +17,8 @@ namespace DeleteTemporaryFiles
             {
                 TemporaryFilePath = args[0];
                 KeepForDays = Convert.ToInt32(args[1]);
-          
-                // This code is in place for development and testing ONLY. It should be removed in a working environment.
-                //TemporaryFilePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Documents\Temporary Files TEST\";
-                //KeepForDays = 1;
-
-                // This is what should happen in a working environment:
-                //Environment.Exit(0);
-                // Notify the user that the parameters supplied are not valid
-           
-           
-            // Instantiate the main logging service (which also holds global variables for TemporaryFilePath and KeepForDays)
+                     
+            // Instantiate the main logging service (which also stores global variables for TemporaryFilePath and KeepForDays)
             Logging log = new Logging(TemporaryFilePath, KeepForDays);
             
             // Validate user-supplied command-line arguments before running the application
@@ -49,11 +40,12 @@ namespace DeleteTemporaryFiles
                 Logging.CloseLog();
                 Environment.Exit(0);
             }
-
             Logging.CloseLog();
+
             }
             catch (Exception ex)
             {
+                // This should probably be replaced by a GUI element notifying the user of the error. But for now, any fatal errors in the application at least get logged
                 Logging log = new Logging(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\DeleteTemporaryFiles\", 0);
 
                 var entry = new LogEntry
