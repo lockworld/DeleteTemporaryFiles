@@ -13,22 +13,20 @@ namespace DeleteTemporaryFiles
             int KeepForDays;
 
             // Read args into local variables
-            if (args.Length == 2)
+            try
             {
                 TemporaryFilePath = args[0];
                 KeepForDays = Convert.ToInt32(args[1]);
-            }
-            else
-            {
+          
                 // This code is in place for development and testing ONLY. It should be removed in a working environment.
-                TemporaryFilePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Documents\Temporary Files TEST\";
-                KeepForDays = 1;
+                //TemporaryFilePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Documents\Temporary Files TEST\";
+                //KeepForDays = 1;
 
                 // This is what should happen in a working environment:
                 //Environment.Exit(0);
                 // Notify the user that the parameters supplied are not valid
-            }
-            
+           
+           
             // Instantiate the main logging service (which also holds global variables for TemporaryFilePath and KeepForDays)
             Logging log = new Logging(TemporaryFilePath, KeepForDays);
             
@@ -45,7 +43,7 @@ namespace DeleteTemporaryFiles
                 {
                     Status = LogStatus.Error,
                     Success = false,
-                    Message = "The application is exiting because the supplied parameters are not valid."
+                    Message = "The application is exiting because the supplied parameters ([" + string.Join(",", args) + "]) are not valid."
                 };
                 Logging.Log(entry);
                 Logging.CloseLog();
@@ -53,6 +51,21 @@ namespace DeleteTemporaryFiles
             }
 
             Logging.CloseLog();
+            }
+            catch (Exception ex)
+            {
+                Logging log = new Logging(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\DeleteTemporaryFiles\", 0);
+
+                var entry = new LogEntry
+                {
+                    Status = LogStatus.Error,
+                    Success = false,
+                    Message = "An unexpected error caused the application to terminate:\r\n     " + ex.ToString()
+                };
+                Logging.Log(entry);
+                Logging.CloseLog();
+                Environment.Exit(0);
+            }
         }
     }
 }
