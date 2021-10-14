@@ -124,7 +124,7 @@ namespace DeleteTemporaryFiles.Services
                     
                 }                
             }
-            else
+            else if (Directory.GetFiles(di.FullName, "*.*", System.IO.SearchOption.AllDirectories).Count()==0) // double-check that directory and all subdirectories are empty.
             {
                 if (di.FullName != temporaryFolder.FullName)
                 {
